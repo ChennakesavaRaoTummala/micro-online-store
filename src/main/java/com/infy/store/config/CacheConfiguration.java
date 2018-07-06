@@ -41,6 +41,18 @@ public class CacheConfiguration {
             cm.createCache(com.infy.store.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.infy.store.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.infy.store.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(com.infy.store.domain.Product.class.getName(), jcacheConfiguration);
+            cm.createCache(com.infy.store.domain.ProductCategory.class.getName(), jcacheConfiguration);
+            cm.createCache(com.infy.store.domain.ProductCategory.class.getName() + ".products", jcacheConfiguration);
+            cm.createCache(com.infy.store.domain.Customer.class.getName(), jcacheConfiguration);
+            cm.createCache(com.infy.store.domain.Customer.class.getName() + ".orders", jcacheConfiguration);
+            cm.createCache(com.infy.store.domain.ProductOrder.class.getName(), jcacheConfiguration);
+            cm.createCache(com.infy.store.domain.ProductOrder.class.getName() + ".orderItems", jcacheConfiguration);
+            cm.createCache(com.infy.store.domain.ProductOrder.class.getName() + ".invoices", jcacheConfiguration);
+            cm.createCache(com.infy.store.domain.OrderItem.class.getName(), jcacheConfiguration);
+            cm.createCache(com.infy.store.domain.Invoice.class.getName(), jcacheConfiguration);
+            cm.createCache(com.infy.store.domain.Invoice.class.getName() + ".shipments", jcacheConfiguration);
+            cm.createCache(com.infy.store.domain.Shipment.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }
