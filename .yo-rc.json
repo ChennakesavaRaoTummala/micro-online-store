@@ -38,6 +38,7 @@
       "zh-tw",
       "hi",
       "ta"
-    ]
+    ],
+    "herokuDeployType": "git"
   }
 }
