@@ -39,6 +39,7 @@
       "hi",
       "ta"
     ],
-    "herokuDeployType": "git"
+    "herokuDeployType": "git",
+    "herokuAppName": "micro-store"
   }
 }
