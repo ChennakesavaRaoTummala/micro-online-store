@@ -1,13 +1,20 @@
 package com.infy.store.config;
 
 import io.github.jhipster.config.JHipsterProperties;
+import io.github.jhipster.config.metrics.SpectatorLogMetricWriter;
+
+import com.netflix.spectator.api.Registry;
+import org.springframework.boot.actuate.autoconfigure.ExportMetricReader;
+import org.springframework.boot.actuate.autoconfigure.ExportMetricWriter;
+import org.springframework.boot.actuate.metrics.writer.MetricWriter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cloud.netflix.metrics.spectator.SpectatorMetricReader;
 
 import com.codahale.metrics.JmxReporter;
 import com.codahale.metrics.JvmAttributeGaugeSet;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Slf4jReporter;
 import com.codahale.metrics.health.HealthCheckRegistry;
-import com.codahale.metrics.jcache.JCacheGaugeSet;
 import com.codahale.metrics.jvm.*;
 import com.ryantenney.metrics.spring.config.annotation.EnableMetrics;
 import com.ryantenney.metrics.spring.config.annotation.MetricsConfigurerAdapter;
@@ -33,8 +40,6 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter {
     private static final String PROP_METRIC_REG_JVM_FILES = "jvm.files";
     private static final String PROP_METRIC_REG_JVM_BUFFERS = "jvm.buffers";
     private static final String PROP_METRIC_REG_JVM_ATTRIBUTE_SET = "jvm.attributes";
-
-    private static final String PROP_METRIC_REG_JCACHE_STATISTICS = "jcache.statistics";
 
     private final Logger log = LoggerFactory.getLogger(MetricsConfiguration.class);
 
@@ -76,7 +81,6 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter {
         metricRegistry.register(PROP_METRIC_REG_JVM_FILES, new FileDescriptorRatioGauge());
         metricRegistry.register(PROP_METRIC_REG_JVM_BUFFERS, new BufferPoolMetricSet(ManagementFactory.getPlatformMBeanServer()));
         metricRegistry.register(PROP_METRIC_REG_JVM_ATTRIBUTE_SET, new JvmAttributeGaugeSet());
-        metricRegistry.register(PROP_METRIC_REG_JCACHE_STATISTICS, new JCacheGaugeSet());
         if (hikariDataSource != null) {
             log.debug("Monitoring the datasource");
             hikariDataSource.setMetricRegistry(metricRegistry);
@@ -97,5 +101,21 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter {
                 .build();
             reporter.start(jHipsterProperties.getMetrics().getLogs().getReportFrequency(), TimeUnit.SECONDS);
         }
+    }
+
+    /* Spectator metrics log reporting */
+    @Bean
+    @ConditionalOnProperty("jhipster.logging.spectator-metrics.enabled")
+    @ExportMetricReader
+    public SpectatorMetricReader spectatorMetricReader(Registry registry) {
+        log.info("Initializing Spectator Metrics Log reporting");
+        return new SpectatorMetricReader(registry);
+    }
+
+    @Bean
+    @ConditionalOnProperty("jhipster.logging.spectator-metrics.enabled")
+    @ExportMetricWriter
+    MetricWriter metricWriter() {
+        return new SpectatorLogMetricWriter();
     }
 }

@@ -7,13 +7,6 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "實體",
-                "product": "Product",
-                "productCategory": "Product Category",
-                "customer": "Customer",
-                "productOrder": "Product Order",
-                "orderItem": "Order Item",
-                "invoice": "Invoice",
-                "shipment": "Shipment",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -27,6 +20,7 @@
             },
             "admin": {
                 "main": "管理",
+                "gateway": "閘道",
                 "userManagement": "使用者管理",
                 "tracker": "使用者追蹤",
                 "metrics": "資源監控",
